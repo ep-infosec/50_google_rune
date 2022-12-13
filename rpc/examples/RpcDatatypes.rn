@@ -1,0 +1,30 @@
+//  Copyright 2021 Google LLC.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+message BasicTypes {
+  boolVal: bool
+  f32Val: f32
+  f64Val: f64
+  u8Val: u8
+  i8Val: i8
+  u16Val: u16
+  i16Val: i16
+  u32Val: u32
+  i32Val: i32
+  u64Val: u64
+  i64Val: i64
+  stringVal: string
+}
+
+rpc Echo(request: BasicTypes) -> BasicTypes

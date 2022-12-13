@@ -1,0 +1,123 @@
+//  Copyright 2021 Google LLC.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+func countParens(x) -> Uint {
+  if false {
+    // Type hint.
+    return 0
+  }
+  typeswitch x {
+    case () {
+      println "x is the empty tuple: ", x
+      return 1
+    }
+    default {
+      println "Recursing with ", x
+      return countParens(x[0]) + 1
+    }
+  }
+}
+
+func incParens(x) {
+  return (x,)
+}
+
+func decParens(x) {
+  return x[0]
+}
+
+func addParens(a, b) {
+  typeswitch a {
+    case () {
+      // The empty tuple represents 0.
+      return b
+    }
+    default {
+      return addParens(decParens(a), incParens(b))
+    }
+  }
+}
+
+// Input a must have at least as many parens as b.
+func subParens(a, b) {
+  typeswitch b {
+    case () {
+      return a
+    }
+    default {
+      return subParens(decParens(a), decParens(b))
+    }
+  }
+}
+
+func doubleParens(x) {
+  return addParens(x, x)
+}
+
+func mulParens(a, b) {
+  typeswitch a {
+    case () {
+      return a
+    }
+    case (()) {
+      // (()) represents 1.
+      return b
+    }
+    default {
+      return addParens(mulParens(decParens(a), b), b)
+    }
+  }
+}
+
+func equalsParens(a, b) -> bool {
+  if false {
+    return true
+  }
+  typeswitch (a, b) {
+    case ((), ()) {
+      return true
+    }
+    default {
+      typeswitch a {
+        case () {
+          return false
+        }
+        default {
+          typeswitch b {
+            case () {
+              return false
+            }
+            default {
+              return equalsParens(decParens(a), decParens(b))
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+t = ((((((((((((((((((((),),),),),),),),),),),),),),),),),),),)
+println countParens(t)
+a = (((),),)
+println "a = ", a
+b = ((((),),),)
+println "b = ", b
+c = addParens(a, b)
+println "c = a + b = ", c
+println "c - b = ", subParens(c, b)
+println "2*c = ", doubleParens(c)
+println "2*c = ", mulParens((((),),), c)
+println "c*2 = ", mulParens(c, (((),),))
+println "2*c == c*2: ", equalsParens(doubleParens(c), mulParens(c, (((),),)))
